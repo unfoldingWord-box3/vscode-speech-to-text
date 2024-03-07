@@ -10,6 +10,7 @@ const app = express();
 // Todo: make ports part of the extension settings
 const port = 9000;
 const websocketPort = 9001;
+let commandQueue = ''
 
 app.use('/', express.static(path.join(__dirname, 'client')));
 app.listen(port, () => {
@@ -38,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 			socket.on('message', (phrase: string) => {
 				console.log(`[Speech to Text] New WebSocket message: ${phrase}`);
+				commandQueue += phrase + '\n'
 
 				/**
 				 * Add text to currently open document/file.
